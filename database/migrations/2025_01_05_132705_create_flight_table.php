@@ -12,10 +12,10 @@ return new class extends Migration {
     {
         Schema::create('flight', function (Blueprint $table) {
             $table->id('flight_id');
-            $table->foreignId('aircraft_id')->constrained('aircraft')->cascadeOnUpdate()->nullOnDelete();
-            $table->foreignId('pilot_id')->constrained('pilot')->cascadeOnUpdate()->nullOnDelete();
-            $table->foreignId('departure_city_id')->constrained('city')->cascadeOnUpdate()->restrictOnDelete();
-            $table->foreignId('arrival_city_id')->constrained('city')->cascadeOnUpdate()->restrictOnDelete();
+            $table->foreignId('aircraft_id')->constrained('aircraft', 'aircraft_id')->cascadeOnUpdate()->nullOnDelete();
+            $table->foreignId('pilot_id')->constrained('pilot', 'pilot_id')->cascadeOnUpdate()->nullOnDelete();
+            $table->foreignId('departure_city_id')->constrained('city', 'city_id')->cascadeOnUpdate()->restrictOnDelete();
+            $table->foreignId('arrival_city_id')->constrained('city', 'city_id')->cascadeOnUpdate()->restrictOnDelete();
             $table->date('departure_date');
             $table->date('arrival_date');
             $table->time('departure_time');
