@@ -21,7 +21,7 @@ return new class extends Migration {
             $table->time('departure_time');
             $table->time('arrival_time');
             $table->decimal('price');
-            $table->string('status');
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
