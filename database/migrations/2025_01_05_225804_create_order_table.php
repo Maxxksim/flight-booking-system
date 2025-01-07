@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('order', function (Blueprint $table) {
             $table->id('order_id');
             $table->foreignId('flight_id')->constrained('flight', 'flight_id')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained('users', 'user_id')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('users', 'id')->cascadeOnUpdate()->cascadeOnDelete();
             $table->integer('seat_count');
             $table->string('email');
             $table->timestamps();
