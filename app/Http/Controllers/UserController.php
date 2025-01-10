@@ -10,67 +10,74 @@ use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(): View
     {
-        return view('user-table', $this->getUsersData());
+        return view('table', $this->getFormattedUsersData());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+
+    private function getFormattedUsersData(?int $id = null): array
     {
-        //
+        if ($id) {
+            $user = User::find($id);
+            $rows_users = [[$user->id, $user->name, $user->email, $user->password]];
+        } else {
+            $users = User::all();
+            $rows_users = $users->map(function ($user) {
+                return [$user->id, $user->name, $user->email, $user->password];
+            });
+        }
+
+        $headers_users = ['id', 'name', 'email', 'password'];
+        $names = $this->removeSpacesFromWorld($headers_users);
+        $table = 'users';
+
+        return compact('rows_users', 'headers_users', 'table', 'names');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function edit(int $id)
     {
-        //
+        return view('edit-table', $this->getFormattedUsersData($id));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    private function getUsersData(): array
+
+    public function update(Request $request)
     {
-        $users = User::all();
+        $user = User::find($request->input('id'));
+        $this->fillUserData($user, $request, false);
+        $user->save();
 
-        $rows = $users->map(function ($user) {
-            return [$user->id, $user->name, $user->email, $user->password];
-        });
-
-        $headers = ['ID', 'Name', 'Email', 'Password'];
-
-        return compact('rows', 'headers');
+        return to_route('user-table');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function add(Request $request)
     {
-        //
+        $user = new User();
+        $this->fillUserData($user, $request, true);
+        $user->save();
+
+        return to_route('user-table');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    private function fillUserData(User $user, Request $request, bool $hashPassword = false)
     {
-        //
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+
+        if ($hashPassword) {
+            $user->password = bcrypt($request->input('password'));
+        } elseif ($request->has('password')) {
+            $user->password = $request->input('password');
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function delete(int $id)
     {
-        //
+        User::destroy($id);
+
+        return to_route('user-table');
     }
+
+
 }

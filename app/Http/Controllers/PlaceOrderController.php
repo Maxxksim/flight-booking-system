@@ -58,11 +58,11 @@ class PlaceOrderController extends Controller
         });
 
 
-        $headers_orders = ['flightid', 'seatcount', 'email'];
-
+        $headers_orders = ['flight id', 'seat count', 'email'];
+        $names = $this->removeSpacesFromWorld($headers_orders);
         $table = 'orders';
 
-        return compact('rows_orders', 'headers_orders', 'table');
+        return compact('rows_orders', 'headers_orders', 'table', 'names');
     }
 
     public function showMyOrders()
