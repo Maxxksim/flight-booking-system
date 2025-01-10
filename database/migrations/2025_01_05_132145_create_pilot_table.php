@@ -11,10 +11,11 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('pilots', function (Blueprint $table) {
-            $table->id('pilot_id');
+            $table->id();
             $table->string('name');
-            $table->string('email');
-            $table->integer('flight_count');
+            $table->string('email')->unique();
+            $table->string('license_number')->unique();
+            $table->integer('flights')->default(0);
             $table->timestamps();
         });
     }

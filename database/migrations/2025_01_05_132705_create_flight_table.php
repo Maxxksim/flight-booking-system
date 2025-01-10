@@ -11,17 +11,16 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('flights', function (Blueprint $table) {
-            $table->id('flight_id');
-            $table->foreignId('aircraft_id')->constrained('aircraft', 'aircraft_id')->cascadeOnUpdate()->nullOnDelete();
-            $table->foreignId('pilot_id')->constrained('pilots', 'pilot_id')->cascadeOnUpdate()->nullOnDelete();
-            $table->foreignId('departure_city_id')->constrained('cities', 'city_id')->cascadeOnUpdate()->restrictOnDelete();
-            $table->foreignId('arrival_city_id')->constrained('cities', 'city_id')->cascadeOnUpdate()->restrictOnDelete();
+            $table->id();
+            $table->foreignId('aircraft_id')->constrained('aircraft', 'id')->cascadeOnUpdate()->nullOnDelete();
+            $table->foreignId('pilot_id')->constrained('pilots', 'id')->cascadeOnUpdate()->nullOnDelete();
+            $table->foreignId('departure_city_id')->constrained('cities', 'id')->cascadeOnUpdate()->restrictOnDelete();
+            $table->foreignId('arrival_city_id')->constrained('cities', 'id')->cascadeOnUpdate()->restrictOnDelete();
             $table->date('departure_date');
             $table->date('arrival_date');
-            $table->time('departure_time');
-            $table->time('arrival_time');
             $table->decimal('price');
             $table->boolean('status')->default(true);
+            $table->integer('free_space')->default(0);
             $table->timestamps();
         });
     }

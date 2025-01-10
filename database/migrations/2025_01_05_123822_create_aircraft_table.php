@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('aircraft', function (Blueprint $table) {
-            $table->id('aircraft_id');
+            $table->id();
             $table->string('model');
             $table->integer('seat_count');
             $table->boolean('status')->default(true);
