@@ -1,17 +1,26 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("You're logged in!") }}
+    @if((!\App\Models\Pilot::isPilot() && Auth::user()->isSimpleUser()))
+        <div class="container mx-auto py-8">
+            <form method="POST" action="{{ route('register-pilot') }}">
+                @csrf
+                <div class="flex items-center space-x-4">
+                    <label for="license_number" class="text-gray-300">Enter license number for pilot
+                        verification</label>
+                    <input
+                        type="text"
+                        name="license_number"
+                        id="license_number"
+                        maxlength="9"
+                        pattern="^[A-Za-z]{3}\d+$"
+                        required
+                        class="px-4 py-2 bg-gray-800 text-white border border-gray-700 rounded-md"
+                        placeholder=""
+                    />
+                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-md">
+                        Submit
+                    </button>
                 </div>
-            </div>
+            </form>
         </div>
-    </div>
+    @endif
 </x-app-layout>
